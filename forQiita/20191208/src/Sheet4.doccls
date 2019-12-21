@@ -1,0 +1,68 @@
+﻿Option Explicit
+
+
+
+'******************************************************************************************
+'*関数名    ：CommandButton_CalcProcessingTime_Run_Click
+'*機能      ：処理時間計算
+'*引数(1)   ：
+'******************************************************************************************
+Private Sub CommandButton_CalcProcessingTime_Run_Click()
+    
+    '定数
+    Const FUNC_NAME As String = "CommandButton_CalcProcessingTime_Run_Click"
+    
+    '変数
+    
+    Dim filePath As String              '読み込む画像ファイルのフルパス格納
+    Dim i As Long                       'ループカウンタ
+    
+    On Error GoTo ErrorHandler
+    '---以下に処理を記述---
+    
+    '画面表示停止
+    Application.ScreenUpdating = False
+    
+    '画像ファイルのパスを取得
+    filePath = Me.Cells(6, 5).Value
+    
+    'バージョン1について処理時間計算
+    For i = 1 To 5
+        Call SWStart
+        Call isAnimationGifImage(filePath, Me.Cells(1, 1))
+        Call SWStop
+        
+        Me.Cells(13, 4 + i).Value = SWShow
+        Me.Cells(1, 1).Value = ""
+    Next
+    
+    'バージョン2について処理時間計算
+    For i = 1 To 5
+        Call SWStart
+        Call isAnimationGifImage_ver2(filePath, Me.Cells(1, 1))
+        Call SWStop
+        
+        Me.Cells(14, 4 + i).Value = SWShow
+        Me.Cells(1, 1).Value = ""
+    Next
+    
+    '画面表示再開
+    Application.ScreenUpdating = True
+    
+
+ExitHandler:
+
+    Exit Sub
+    
+ErrorHandler:
+
+        MsgBox "エラーが発生しましたので終了します" & _
+                vbLf & _
+                "関数名：" & FUNC_NAME & _
+                vbLf & _
+                "エラー番号" & Err.Number & Chr(13) & Err.Description, vbCritical
+        
+        GoTo ExitHandler
+        
+End Sub
+

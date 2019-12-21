@@ -1,0 +1,5 @@
+﻿Option Explicit
+
+Private Sub CommandButton_AnimeGif_Run_Click()
+    Call isAnimationGifImage(Me.Cells(6, 3).Value, Me.Cells(7, 3))
+End Sub

@@ -1,0 +1,5 @@
+﻿Option Explicit
+
+Private Sub CommandButton_CharCode_Run_Click()
+    Call convertByteArrayFromString(Me.Cells(6, 3), Me.Cells(7, 3))
+End Sub

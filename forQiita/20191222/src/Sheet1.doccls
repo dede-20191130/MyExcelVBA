@@ -1,0 +1,38 @@
+﻿Option Explicit
+
+Private Sub ComboBox_BookNames_DropButtonClick()
+    
+    '変数
+    Dim arr As Variant
+    Dim cnt As Long
+    
+    '項目をクリア
+    ComboBox_BookNames.List = Array()
+    ComboBox_BookNames.AddItem ""
+    
+    'すべてのブック名を取得
+    arr = Split(ReturnCurrentBookNames, DELIMITER)
+    For cnt = LBound(arr) To UBound(arr)
+        ComboBox_BookNames.AddItem arr(cnt)
+    Next
+    
+End Sub
+
+Private Sub CommandButton_OpenFileDialog_Click()
+    With Application.FileDialog(msoFileDialogFilePicker)
+        .InitialFileName = Environ("HOMEPATH")
+        .AllowMultiSelect = False
+
+        .Title = "csvファイルの選択"
+        If .Show = True Then
+            Me.Cells(2, 4).Value = .SelectedItems(1)
+        End If
+    End With
+End Sub
+
+Private Sub CommandButton_StartImport_Click()
+    '実行可否を尋ねる
+    If MsgBox("インポートを実行します。", vbYesNo) = vbYes Then
+        Call NamesImport(Me.Cells(2, 4).Value, Workbooks(ComboBox_BookNames.Value))
+    End If
+End Sub
